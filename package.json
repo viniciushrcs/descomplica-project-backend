@@ -7,7 +7,9 @@
     "coverage": "nyc npm run test",
     "test": "mocha --recursive src --extension .test.js --timeout 10000 --exit",
     "start": "node src/app.js",
-    "start:dev": "nodemon src/app.js"
+    "start:dev": "nodemon src/app.js",
+    "knex:make": "npx knex --knexfile knexFile.js migrate:make",
+    "knex:migrate": "npx knex --knexfile knexFile.js migrate:latest"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +30,9 @@
   },
   "dependencies": {
     "apollo-server": "^3.9.0",
-    "graphql": "^16.5.0"
+    "dotenv": "^16.0.1",
+    "graphql": "^16.5.0",
+    "knex": "^2.1.0",
+    "pg": "^8.7.3"
   }
 }
