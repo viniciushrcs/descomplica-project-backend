@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "coverage": "nyc npm run test",
+    "test": "mocha --recursive src --extension .test.js --timeout 10000 --exit"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "git-commit-msg-linter": "^4.1.3",
     "husky": "^8.0.1",
     "nyc": "^15.1.0",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "mocha": "^9.0.3"
   }
 }
