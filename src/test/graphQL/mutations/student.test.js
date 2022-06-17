@@ -109,6 +109,27 @@ describe('Student mutations', () => {
     )
   })
 
+  it('Should throws an error when createStudent is called with name empty', async () => {
+    const result = await testServer.executeOperation({
+      query: `mutation($cpf: String!, $name: String!, $email: String!) {
+        createStudent(cpf: $cpf, name: $name, email: $email) {
+          cpf
+          name
+          email
+        }
+      }`,
+      variables: {
+        name: '',
+        cpf: 'cpf1',
+        email: 'email1',
+      },
+    })
+
+    expect(result.errors[0].message).to.be.equal(
+      'All parameters must be passed'
+    )
+  })
+
   it('Should create and return one student when createStudent is called properly', async () => {
     const result = await testServer.executeOperation({
       query: `mutation($cpf: String!, $name: String!, $email: String!) {
