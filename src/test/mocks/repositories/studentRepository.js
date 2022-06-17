@@ -11,6 +11,11 @@ const validReturn = [
   },
 ]
 
+const errorReturn = new Error(
+  'An error ocurred while trying to get all registers from student table'
+)
+
 module.exports = {
   validReturn,
+  errorReturn,
 }
