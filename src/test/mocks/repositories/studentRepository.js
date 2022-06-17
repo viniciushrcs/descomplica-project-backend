@@ -1,4 +1,4 @@
-const validReturn = [
+const getAllValidReturn = [
   {
     cpf: 'cpf1',
     name: 'name1',
@@ -11,11 +11,18 @@ const validReturn = [
   },
 ]
 
+const getStudentValidReturn = {
+  cpf: 'cpf3',
+  name: 'name3',
+  email: 'email3',
+}
+
 const errorReturn = new Error(
   'An error ocurred while trying to get all registers from student table'
 )
 
 module.exports = {
-  validReturn,
+  getAllValidReturn,
+  getStudentValidReturn,
   errorReturn,
 }
