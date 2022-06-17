@@ -60,4 +60,19 @@ describe('Student Repository', () => {
 
     expect(() => studentRepository.getAll()).to.throw(getStudentErrorReturn)
   })
+
+  it('Must create one student when createStudent is called', async () => {
+    const {
+      studentRepositoryMocks: { createStudentValidReturn },
+    } = repositoriesMock
+
+    const studentRepository = new StudentRepository()
+
+    const stub = sinon.stub(studentRepository, 'createStudent')
+    stub.resolves(createStudentValidReturn)
+
+    const response = await studentRepository.createStudent()
+
+    expect(response).to.be.deep.equal(createStudentValidReturn)
+  })
 })
