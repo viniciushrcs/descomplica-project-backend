@@ -1,5 +1,6 @@
 const typeDefs = `
   type Mutation {
+    createStudent(cpf: String!, name: String!, email: String!): Student
   }
 
   type Query {
