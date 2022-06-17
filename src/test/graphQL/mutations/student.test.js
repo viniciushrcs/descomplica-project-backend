@@ -5,7 +5,10 @@ const typeDefs = require('../../../app/graphql/_typeDefs/types')
 const { mutationsMock } = require('../../mocks')
 
 const {
-  studentMutationMocks: { createStudentValidReturn, createStudentNoCPFError },
+  studentMutationMocks: {
+    createStudentValidReturn,
+    createStudentNoVariableError,
+  },
 } = mutationsMock
 
 const resolversMock = {
@@ -36,6 +39,28 @@ describe('Student mutations', () => {
       },
     })
 
-    expect(result.errors[0].message).to.be.equal(createStudentNoCPFError)
+    expect(result.errors[0].message).to.be.equal(
+      createStudentNoVariableError('cpf')
+    )
+  })
+
+  it('Should throws an error when createStudent is called without passing name', async () => {
+    const result = await testServer.executeOperation({
+      query: `mutation($cpf: String!, $name: String!, $email: String!) {
+        createStudent(cpf: $cpf, name: $name, email: $email) {
+          cpf
+          name
+          email
+        }
+      }`,
+      variables: {
+        cpf: 'cpf1',
+        email: 'email1',
+      },
+    })
+
+    expect(result.errors[0].message).to.be.equal(
+      createStudentNoVariableError('name')
+    )
   })
 })
