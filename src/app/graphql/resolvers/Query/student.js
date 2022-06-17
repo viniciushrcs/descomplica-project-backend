@@ -7,6 +7,15 @@ const queries = {
     const students = await studentRepository.getAll()
     return students
   },
+
+  async getStudent(_, { name, cpf, email }) {
+    const student = await studentRepository.getStudent({
+      name,
+      cpf,
+      email,
+    })
+    return student
+  },
 }
 
 module.exports = queries

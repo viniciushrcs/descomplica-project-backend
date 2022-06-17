@@ -3,6 +3,7 @@ const typeDefs = `
   }
 
   type Query {
+    getStudent(cpf: String, name: String, email: String): Student
     getStudents: [Student]
   }
 
