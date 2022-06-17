@@ -22,15 +22,15 @@ describe('Student Repository', () => {
 
   it('Must throws an error when getAll throws an error', async () => {
     const {
-      studentRepositoryMocks: { errorReturn },
+      studentRepositoryMocks: { getAllErrorReturn },
     } = repositoriesMock
 
     const studentRepository = new StudentRepository()
 
     const stub = sinon.stub(studentRepository, 'getAll')
-    stub.throws(errorReturn)
+    stub.throws(getAllErrorReturn)
 
-    expect(() => studentRepository.getAll()).to.throw(errorReturn)
+    expect(() => studentRepository.getAll()).to.throw(getAllErrorReturn)
   })
 
   it('Must return one student when getStudent is called', async () => {
@@ -46,5 +46,18 @@ describe('Student Repository', () => {
     const response = await studentRepository.getStudent()
 
     expect(response).to.be.deep.equal(getStudentValidReturn)
+  })
+
+  it('Must throws an error when getStudent throws an error', async () => {
+    const {
+      studentRepositoryMocks: { getStudentErrorReturn },
+    } = repositoriesMock
+
+    const studentRepository = new StudentRepository()
+
+    const stub = sinon.stub(studentRepository, 'getAll')
+    stub.throws(getStudentErrorReturn)
+
+    expect(() => studentRepository.getAll()).to.throw(getStudentErrorReturn)
   })
 })

@@ -17,12 +17,17 @@ const getStudentValidReturn = {
   email: 'email3',
 }
 
-const errorReturn = new Error(
+const getAllErrorReturn = new Error(
   'An error ocurred while trying to get all registers from student table'
+)
+
+const getStudentErrorReturn = new Error(
+  'An error ocurred while trying to get one register from student table'
 )
 
 module.exports = {
   getAllValidReturn,
   getStudentValidReturn,
-  errorReturn,
+  getAllErrorReturn,
+  getStudentErrorReturn,
 }
