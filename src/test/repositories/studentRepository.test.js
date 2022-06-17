@@ -75,4 +75,19 @@ describe('Student Repository', () => {
 
     expect(response).to.be.deep.equal(createStudentValidReturn)
   })
+
+  it('Must throws an error when createStudent throws an error', async () => {
+    const {
+      studentRepositoryMocks: { createStudentErrorReturn },
+    } = repositoriesMock
+
+    const studentRepository = new StudentRepository()
+
+    const stub = sinon.stub(studentRepository, 'createStudent')
+    stub.throws(createStudentErrorReturn)
+
+    expect(() => studentRepository.createStudent()).to.throw(
+      createStudentErrorReturn
+    )
+  })
 })
