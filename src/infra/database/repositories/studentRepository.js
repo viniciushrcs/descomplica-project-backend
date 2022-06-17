@@ -1,3 +1,4 @@
+const { v4: generateNewUUID } = require('uuid')
 const knex = require('./connection')
 
 class StudentRepository {
@@ -39,6 +40,28 @@ class StudentRepository {
     } catch (error) {
       throw new Error(
         'An error ocurred while trying to get one register from student table'
+      )
+    }
+  }
+
+  async createStudent({ name = null, email = null, cpf = null }) {
+    try {
+      const response = await this.knex('student').insert({
+        id: generateNewUUID(),
+        name,
+        email,
+        cpf,
+      })
+
+      if (!response) return null
+      return {
+        name,
+        email,
+        cpf,
+      }
+    } catch (error) {
+      throw new Error(
+        'An error ocurred while trying to insert one register in student table'
       )
     }
   }
