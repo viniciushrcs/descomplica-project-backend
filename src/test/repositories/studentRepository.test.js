@@ -1,8 +1,8 @@
 const { expect } = require('chai')
 const { describe, it } = require('mocha')
 const sinon = require('sinon')
-const StudentRepository = require('../infra/database/repositories/studentRepository')
-const { repositoriesMock } = require('./mocks')
+const StudentRepository = require('../../infra/database/repositories/studentRepository')
+const { repositoriesMock } = require('../mocks')
 
 describe('Student Repository', () => {
   it('Must return all students when getAll is called', async () => {
