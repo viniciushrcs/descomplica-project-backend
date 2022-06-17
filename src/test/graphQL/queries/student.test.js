@@ -5,12 +5,13 @@ const typeDefs = require('../../../app/graphql/_typeDefs/types')
 const { queriesMock } = require('../../mocks')
 
 const {
-  studentQueryMocks: { validReturn },
+  studentQueryMocks: { getStudentValidReturn, getStudentsValidReturn },
 } = queriesMock
 
 const resolversMock = {
   Query: {
-    getStudents: () => validReturn,
+    getStudents: () => getStudentsValidReturn,
+    getStudent: () => getStudentValidReturn,
   },
 }
 
@@ -35,6 +36,24 @@ describe('Student queries', () => {
     expect(result.data.getStudents[0]).to.haveOwnProperty('cpf')
     expect(result.data.getStudents[0]).to.haveOwnProperty('name')
     expect(result.data.getStudents[0]).to.haveOwnProperty('email')
-    expect(result.data.getStudents).to.be.deep.equal(validReturn)
+    expect(result.data.getStudents).to.be.deep.equal(getStudentsValidReturn)
+  })
+
+  it('Should return one student in getStudent query', async () => {
+    const result = await testServer.executeOperation({
+      query: `query getStudent {
+        getStudent(name: "nome" cpf: "111111111" email: "email@email.com") {
+          cpf
+          name
+          email
+        }
+      }
+      `,
+    })
+
+    expect(result.data.getStudent).to.haveOwnProperty('cpf')
+    expect(result.data.getStudent).to.haveOwnProperty('name')
+    expect(result.data.getStudent).to.haveOwnProperty('email')
+    expect(result.data.getStudent).to.be.deep.equal(getStudentValidReturn)
   })
 })

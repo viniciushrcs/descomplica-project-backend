@@ -1,4 +1,4 @@
-const validReturn = [
+const getStudentsValidReturn = [
   {
     cpf: 'cpf1',
     name: 'name1',
@@ -11,6 +11,13 @@ const validReturn = [
   },
 ]
 
+const getStudentValidReturn = {
+  cpf: 'cpf3',
+  name: 'name3',
+  email: 'email3',
+}
+
 module.exports = {
-  validReturn,
+  getStudentsValidReturn,
+  getStudentValidReturn,
 }
