@@ -8,12 +8,16 @@ const {
   studentMutationMocks: {
     createStudentValidReturn,
     createStudentNoVariableError,
+    createStudentEmptyVariableError,
   },
 } = mutationsMock
 
 const resolversMock = {
   Mutation: {
-    createStudent: () => createStudentValidReturn,
+    createStudent: (_, { email, name, cpf }) => {
+      if (!email || !name || !cpf) throw createStudentEmptyVariableError
+      return createStudentValidReturn
+    },
   },
 }
 
@@ -81,6 +85,27 @@ describe('Student mutations', () => {
 
     expect(result.errors[0].message).to.be.equal(
       createStudentNoVariableError('email')
+    )
+  })
+
+  it('Should throws an error when createStudent is called with cpf empty', async () => {
+    const result = await testServer.executeOperation({
+      query: `mutation($cpf: String!, $name: String!, $email: String!) {
+        createStudent(cpf: $cpf, name: $name, email: $email) {
+          cpf
+          name
+          email
+        }
+      }`,
+      variables: {
+        cpf: '',
+        name: 'name1',
+        email: 'email1',
+      },
+    })
+
+    expect(result.errors[0].message).to.be.equal(
+      'All parameters must be passed'
     )
   })
 
