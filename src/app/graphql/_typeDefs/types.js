@@ -3,6 +3,7 @@ const typeDefs = `
   }
 
   type Query {
+    getStudents: [Student]
   }
 
   type Student {
