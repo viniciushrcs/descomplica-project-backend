@@ -83,4 +83,26 @@ describe('Student mutations', () => {
       createStudentNoVariableError('email')
     )
   })
+
+  it('Should create and return one student when createStudent is called properly', async () => {
+    const result = await testServer.executeOperation({
+      query: `mutation($cpf: String!, $name: String!, $email: String!) {
+        createStudent(cpf: $cpf, name: $name, email: $email) {
+          cpf
+          name
+          email
+        }
+      }`,
+      variables: {
+        cpf: 'cpf1',
+        name: 'name1',
+        email: 'email1',
+      },
+    })
+
+    expect(result.data.createStudent).to.haveOwnProperty('cpf')
+    expect(result.data.createStudent).to.haveOwnProperty('name')
+    expect(result.data.createStudent).to.haveOwnProperty('email')
+    expect(result.data.createStudent).to.be.deep.equal(createStudentValidReturn)
+  })
 })
