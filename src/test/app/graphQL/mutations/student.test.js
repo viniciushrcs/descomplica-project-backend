@@ -1,8 +1,8 @@
 const { ApolloServer } = require('apollo-server')
 const { expect } = require('chai')
 const { describe, it } = require('mocha')
-const typeDefs = require('../../../app/graphql/_typeDefs/types')
-const { mutationsMock } = require('../../mocks')
+const typeDefs = require('../../../../app/graphql/_typeDefs/types')
+const { mutationsMock } = require('../../../mocks')
 
 const {
   studentMutationMocks: {

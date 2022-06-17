@@ -7,7 +7,12 @@ const createStudentValidReturn = {
 const createStudentNoVariableError = (variable) =>
   `Variable "$${variable}" of required type "String!" was not provided.`
 
+const createStudentEmptyVariableError = new Error(
+  'All parameters must be passed'
+)
+
 module.exports = {
   createStudentValidReturn,
   createStudentNoVariableError,
+  createStudentEmptyVariableError,
 }
