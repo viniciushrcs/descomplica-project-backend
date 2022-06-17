@@ -63,4 +63,24 @@ describe('Student mutations', () => {
       createStudentNoVariableError('name')
     )
   })
+
+  it('Should throws an error when createStudent is called without passing email', async () => {
+    const result = await testServer.executeOperation({
+      query: `mutation($cpf: String!, $name: String!, $email: String!) {
+        createStudent(cpf: $cpf, name: $name, email: $email) {
+          cpf
+          name
+          email
+        }
+      }`,
+      variables: {
+        cpf: 'cpf1',
+        name: 'name1',
+      },
+    })
+
+    expect(result.errors[0].message).to.be.equal(
+      createStudentNoVariableError('email')
+    )
+  })
 })
