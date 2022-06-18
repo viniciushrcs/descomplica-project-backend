@@ -8,7 +8,10 @@ const {
   studentMutationMocks: {
     createStudentValidReturn,
     createStudentNoVariableError,
+    editStudentNoVariableError,
     createStudentEmptyVariableError,
+    editStudentEmptyVariableError,
+    editStudentValidReturn,
   },
 } = mutationsMock
 
@@ -17,6 +20,10 @@ const resolversMock = {
     createStudent: (_, { email, name, cpf }) => {
       if (!email || !name || !cpf) throw createStudentEmptyVariableError
       return createStudentValidReturn
+    },
+    editStudent: (_, { email, name, cpf }) => {
+      if (!email || !name || !cpf) throw editStudentEmptyVariableError
+      return editStudentValidReturn
     },
   },
 }
@@ -171,5 +178,25 @@ describe('Student mutations', () => {
     expect(result.data.createStudent).to.haveOwnProperty('name')
     expect(result.data.createStudent).to.haveOwnProperty('email')
     expect(result.data.createStudent).to.be.deep.equal(createStudentValidReturn)
+  })
+
+  it('Should throws an error when editStudent is called without passing cpf', async () => {
+    const result = await testServer.executeOperation({
+      query: `mutation($cpf: String!, $name: String!, $email: String!) {
+        editStudent(cpf: $cpf, name: $name, email: $email) {
+          cpf
+          name
+          email
+        }
+      }`,
+      variables: {
+        name: 'name1',
+        email: 'email1',
+      },
+    })
+
+    expect(result.errors[0].message).to.be.equal(
+      editStudentNoVariableError('cpf')
+    )
   })
 })
