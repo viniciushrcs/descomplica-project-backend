@@ -68,14 +68,11 @@ class StudentRepository {
 
   async editStudent({ name = null, email = null, cpf = null }) {
     try {
-      const response = await this.knex('student')
-        .where('cpf', cpf)
-        .orWhere('email', email)
-        .update({
-          name,
-          email,
-          cpf,
-        })
+      const response = await this.knex('student').where('cpf', cpf).update({
+        name,
+        email,
+        cpf,
+      })
 
       if (!response) return null
       return {
@@ -86,6 +83,23 @@ class StudentRepository {
     } catch (error) {
       throw new Error(
         'An error ocurred while trying to edit one register in student table'
+      )
+    }
+  }
+
+  async deleteStudent({ name = null, email = null, cpf = null }) {
+    try {
+      const response = await this.knex('student').where('cpf', cpf).delete()
+
+      if (!response) return null
+      return {
+        name,
+        email,
+        cpf,
+      }
+    } catch (error) {
+      throw new Error(
+        'An error ocurred while trying to delete one register in student table'
       )
     }
   }
