@@ -144,5 +144,20 @@ describe('Student Repository', () => {
 
       expect(response).to.be.deep.equal(deleteStudentValidReturn)
     })
+
+    it('Must throw an error when deleteStudent throws an error', async () => {
+      const {
+        studentRepositoryMocks: { deleteStudentErrorReturn },
+      } = repositoriesMock
+
+      const studentRepository = new StudentRepository()
+
+      const stub = sinon.stub(studentRepository, 'deleteStudent')
+      stub.throws(deleteStudentErrorReturn)
+
+      expect(() => studentRepository.deleteStudent()).to.throw(
+        deleteStudentErrorReturn
+      )
+    })
   })
 })

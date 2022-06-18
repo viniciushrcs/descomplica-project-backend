@@ -51,6 +51,10 @@ const deleteStudentValidReturn = {
   email: 'email5',
 }
 
+const deleteStudentErrorReturn = new Error(
+  'An error ocurred while trying to delete one register in student table'
+)
+
 module.exports = {
   getAllValidReturn,
   getStudentValidReturn,
@@ -61,4 +65,5 @@ module.exports = {
   editStudentValidReturn,
   editStudentErrorReturn,
   deleteStudentValidReturn,
+  deleteStudentErrorReturn,
 }
