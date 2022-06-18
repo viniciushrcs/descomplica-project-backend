@@ -30,6 +30,10 @@ const deleteStudentEmptyVariableError = new Error(
   'CPF must be passed as parameter'
 )
 
+const deleteStudentNotFound = new Error(
+  'Could not find a student with cpf: cpf'
+)
+
 module.exports = {
   createStudentValidReturn,
   createStudentNoVariableError,
@@ -40,4 +44,5 @@ module.exports = {
   deleteStudentValidReturn,
   deleteStudentEmptyVariableError,
   deleteStudentNoVariableError,
+  deleteStudentNotFound,
 }

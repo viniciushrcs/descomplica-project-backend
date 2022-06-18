@@ -1,6 +1,8 @@
 const { ApolloServer } = require('apollo-server')
 const { expect } = require('chai')
 const { describe, it } = require('mocha')
+const sinon = require('sinon')
+
 const typeDefs = require('../../../../app/graphql/_typeDefs/types')
 const { mutationsMock } = require('../../../mocks')
 const { mutationResolverMock } = require('../../../mocks/resolvers')
@@ -13,6 +15,7 @@ const {
     editStudentValidReturn,
     deleteStudentValidReturn,
     deleteStudentNoVariableError,
+    deleteStudentNotFound,
   },
 } = mutationsMock
 
@@ -347,17 +350,25 @@ describe('Student mutations', () => {
     })
 
     it('Should throw an error when deleteStudent cannot find the student to be deleted', async () => {
-      const result = await testServer.executeOperation({
+      const testServerStub = new ApolloServer({
+        typeDefs,
+        resolvers: mutationResolverMock,
+        mockEntireSchema: false,
+      })
+      const stub = sinon.stub(testServerStub, 'executeOperation')
+      stub.throws(deleteStudentNotFound)
+
+      const params = {
         query: `mutation($cpf: String!) {
           deleteStudent(cpf: $cpf) 
         }`,
         variables: {
           cpf: '',
         },
-      })
+      }
 
-      expect(result.errors[0].message).to.be.equal(
-        'CPF must be passed as parameter'
+      expect(() => testServerStub.executeOperation(params)).to.throw(
+        deleteStudentNotFound
       )
     })
 
