@@ -22,6 +22,12 @@ const editStudentValidReturn = {
   email: 'email2',
 }
 
+const deleteStudentValidReturn = true
+
+const deleteStudentEmptyVariableError = new Error(
+  'CPF must be passed as parameter'
+)
+
 module.exports = {
   createStudentValidReturn,
   createStudentNoVariableError,
@@ -29,4 +35,6 @@ module.exports = {
   editStudentNoVariableError,
   editStudentEmptyVariableError,
   editStudentValidReturn,
+  deleteStudentValidReturn,
+  deleteStudentEmptyVariableError,
 }

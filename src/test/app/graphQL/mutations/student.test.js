@@ -12,6 +12,8 @@ const {
     createStudentEmptyVariableError,
     editStudentEmptyVariableError,
     editStudentValidReturn,
+    deleteStudentEmptyVariableError,
+    deleteStudentValidReturn,
   },
 } = mutationsMock
 
@@ -24,6 +26,10 @@ const resolversMock = {
     editStudent: (_, { email, name, cpf }) => {
       if (!email || !name || !cpf) throw editStudentEmptyVariableError
       return editStudentValidReturn
+    },
+    deleteStudent: (_, { cpf }) => {
+      if (!cpf) throw deleteStudentEmptyVariableError
+      return deleteStudentValidReturn
     },
   },
 }
@@ -328,6 +334,21 @@ describe('Student mutations', () => {
       expect(result.data.editStudent).to.haveOwnProperty('name')
       expect(result.data.editStudent).to.haveOwnProperty('email')
       expect(result.data.editStudent).to.be.deep.equal(editStudentValidReturn)
+    })
+  })
+
+  describe('deleteStudent', () => {
+    it('Should delete one student when deleteStudent is called properly', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!) {
+          deleteStudent(cpf: $cpf) 
+        }`,
+        variables: {
+          cpf: 'cpf1',
+        },
+      })
+
+      expect(result.data.deleteStudent).to.be.equal(deleteStudentValidReturn)
     })
   })
 })
