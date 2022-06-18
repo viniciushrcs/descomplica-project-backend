@@ -2,6 +2,7 @@ const typeDefs = `
   type Mutation {
     createStudent(cpf: String!, name: String!, email: String!): Student
     editStudent(cpf: String!, name: String!, email: String!): Student
+    deleteStudent(cpf: String!): Boolean
   }
 
   type Query {

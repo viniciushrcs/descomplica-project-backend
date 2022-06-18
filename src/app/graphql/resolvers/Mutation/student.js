@@ -30,6 +30,25 @@ const mutations = {
 
     return editStudentResponse
   },
+
+  async deleteStudent(_, { cpf }) {
+    if (!cpf) throw new Error('CPF must be passed as parameter')
+
+    const studentToBeDeleted = await studentRepository.getStudent({
+      cpf,
+    })
+
+    if (!studentToBeDeleted)
+      throw new Error(`Could not find a student with cpf: ${cpf}`)
+
+    await studentRepository.deleteStudent({
+      cpf,
+      name: studentToBeDeleted.name,
+      email: studentToBeDeleted.email,
+    })
+
+    return true
+  },
 }
 
 module.exports = mutations
