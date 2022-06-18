@@ -16,6 +16,20 @@ const mutations = {
 
     return newStudentResponse
   },
+
+  async editStudent(_, updateStudent) {
+    const { name, cpf, email } = updateStudent
+    if (!name || !cpf || !email)
+      throw new Error('All parameters must be passed')
+
+    const editStudentResponse = await studentRepository.editStudent({
+      name,
+      cpf,
+      email,
+    })
+
+    return editStudentResponse
+  },
 }
 
 module.exports = mutations
