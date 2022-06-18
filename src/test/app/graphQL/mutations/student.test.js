@@ -219,4 +219,24 @@ describe('Student mutations', () => {
       editStudentNoVariableError('name')
     )
   })
+
+  it('Should throws an error when editStudent is called without passing email', async () => {
+    const result = await testServer.executeOperation({
+      query: `mutation($cpf: String!, $name: String!, $email: String!) {
+        editStudent(cpf: $cpf, name: $name, email: $email) {
+          cpf
+          name
+          email
+        }
+      }`,
+      variables: {
+        cpf: 'cpf1',
+        name: 'name1',
+      },
+    })
+
+    expect(result.errors[0].message).to.be.equal(
+      editStudentNoVariableError('email')
+    )
+  })
 })
