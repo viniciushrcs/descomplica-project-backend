@@ -20,7 +20,7 @@ describe('Student Repository', () => {
     expect(response).to.be.deep.equal(getAllValidReturn)
   })
 
-  it('Must throws an error when getAll throws an error', async () => {
+  it('Must throw an error when getAll throws an error', async () => {
     const {
       studentRepositoryMocks: { getAllErrorReturn },
     } = repositoriesMock
@@ -48,7 +48,7 @@ describe('Student Repository', () => {
     expect(response).to.be.deep.equal(getStudentValidReturn)
   })
 
-  it('Must throws an error when getStudent throws an error', async () => {
+  it('Must throw an error when getStudent throws an error', async () => {
     const {
       studentRepositoryMocks: { getStudentErrorReturn },
     } = repositoriesMock
@@ -76,7 +76,7 @@ describe('Student Repository', () => {
     expect(response).to.be.deep.equal(createStudentValidReturn)
   })
 
-  it('Must throws an error when createStudent throws an error', async () => {
+  it('Must throw an error when createStudent throws an error', async () => {
     const {
       studentRepositoryMocks: { createStudentErrorReturn },
     } = repositoriesMock
@@ -104,5 +104,20 @@ describe('Student Repository', () => {
     const response = await studentRepository.editStudent()
 
     expect(response).to.be.deep.equal(editStudentValidReturn)
+  })
+
+  it('Must throw an error when editStudent throws an error', async () => {
+    const {
+      studentRepositoryMocks: { editStudentErrorReturn },
+    } = repositoriesMock
+
+    const studentRepository = new StudentRepository()
+
+    const stub = sinon.stub(studentRepository, 'editStudent')
+    stub.throws(editStudentErrorReturn)
+
+    expect(() => studentRepository.editStudent()).to.throw(
+      editStudentErrorReturn
+    )
   })
 })

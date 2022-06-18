@@ -41,6 +41,10 @@ const editStudentValidReturn = {
   email: 'email5',
 }
 
+const editStudentErrorReturn = new Error(
+  'An error ocurred while trying to edit one register in student table'
+)
+
 module.exports = {
   getAllValidReturn,
   getStudentValidReturn,
@@ -49,4 +53,5 @@ module.exports = {
   createStudentErrorReturn,
   createStudentValidReturn,
   editStudentValidReturn,
+  editStudentErrorReturn,
 }
