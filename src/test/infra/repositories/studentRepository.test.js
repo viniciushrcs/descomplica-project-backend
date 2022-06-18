@@ -128,4 +128,21 @@ describe('Student Repository', () => {
       )
     })
   })
+
+  describe('deleteStudent', () => {
+    it('Must delete one student when deleteStudent is called', async () => {
+      const {
+        studentRepositoryMocks: { deleteStudentValidReturn },
+      } = repositoriesMock
+
+      const studentRepository = new StudentRepository()
+
+      const stub = sinon.stub(studentRepository, 'deleteStudent')
+      stub.resolves(deleteStudentValidReturn)
+
+      const response = await studentRepository.deleteStudent()
+
+      expect(response).to.be.deep.equal(deleteStudentValidReturn)
+    })
+  })
 })
