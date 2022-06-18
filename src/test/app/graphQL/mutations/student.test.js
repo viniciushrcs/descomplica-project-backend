@@ -35,230 +35,299 @@ const testServer = new ApolloServer({
 })
 
 describe('Student mutations', () => {
-  it('Should throws an error when createStudent is called without passing cpf', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        createStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        name: 'name1',
-        email: 'email1',
-      },
+  describe('createStudent', () => {
+    it('Should throws an error when createStudent is called without passing cpf', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          createStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          name: 'name1',
+          email: 'email1',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        createStudentNoVariableError('cpf')
+      )
     })
 
-    expect(result.errors[0].message).to.be.equal(
-      createStudentNoVariableError('cpf')
-    )
+    it('Should throws an error when createStudent is called without passing name', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          createStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          cpf: 'cpf1',
+          email: 'email1',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        createStudentNoVariableError('name')
+      )
+    })
+
+    it('Should throws an error when createStudent is called without passing email', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          createStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          cpf: 'cpf1',
+          name: 'name1',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        createStudentNoVariableError('email')
+      )
+    })
+
+    it('Should throws an error when createStudent is called with cpf empty', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          createStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          cpf: '',
+          name: 'name1',
+          email: 'email1',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        'All parameters must be passed'
+      )
+    })
+
+    it('Should throws an error when createStudent is called with name empty', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          createStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          name: '',
+          cpf: 'cpf1',
+          email: 'email1',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        'All parameters must be passed'
+      )
+    })
+
+    it('Should throws an error when createStudent is called with email empty', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          createStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          name: 'name1',
+          cpf: 'cpf1',
+          email: '',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        'All parameters must be passed'
+      )
+    })
+
+    it('Should create and return one student when createStudent is called properly', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          createStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          cpf: 'cpf1',
+          name: 'name1',
+          email: 'email1',
+        },
+      })
+
+      expect(result.data.createStudent).to.haveOwnProperty('cpf')
+      expect(result.data.createStudent).to.haveOwnProperty('name')
+      expect(result.data.createStudent).to.haveOwnProperty('email')
+      expect(result.data.createStudent).to.be.deep.equal(
+        createStudentValidReturn
+      )
+    })
   })
 
-  it('Should throws an error when createStudent is called without passing name', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        createStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        cpf: 'cpf1',
-        email: 'email1',
-      },
+  describe('editStudent', () => {
+    it('Should throws an error when editStudent is called without passing cpf', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          editStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          name: 'name1',
+          email: 'email1',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        editStudentNoVariableError('cpf')
+      )
     })
 
-    expect(result.errors[0].message).to.be.equal(
-      createStudentNoVariableError('name')
-    )
-  })
+    it('Should throws an error when editStudent is called without passing name', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          editStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          cpf: 'cpf1',
+          email: 'email1',
+        },
+      })
 
-  it('Should throws an error when createStudent is called without passing email', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        createStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        cpf: 'cpf1',
-        name: 'name1',
-      },
+      expect(result.errors[0].message).to.be.equal(
+        editStudentNoVariableError('name')
+      )
     })
 
-    expect(result.errors[0].message).to.be.equal(
-      createStudentNoVariableError('email')
-    )
-  })
+    it('Should throws an error when editStudent is called without passing email', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          editStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          cpf: 'cpf1',
+          name: 'name1',
+        },
+      })
 
-  it('Should throws an error when createStudent is called with cpf empty', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        createStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        cpf: '',
-        name: 'name1',
-        email: 'email1',
-      },
+      expect(result.errors[0].message).to.be.equal(
+        editStudentNoVariableError('email')
+      )
     })
 
-    expect(result.errors[0].message).to.be.equal(
-      'All parameters must be passed'
-    )
-  })
+    it('Should throws an error when editStudent is called with cpf empty', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          editStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          cpf: '',
+          name: 'name1',
+          email: 'email1',
+        },
+      })
 
-  it('Should throws an error when createStudent is called with name empty', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        createStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        name: '',
-        cpf: 'cpf1',
-        email: 'email1',
-      },
+      expect(result.errors[0].message).to.be.equal(
+        'All parameters must be passed'
+      )
     })
 
-    expect(result.errors[0].message).to.be.equal(
-      'All parameters must be passed'
-    )
-  })
+    it('Should throws an error when editStudent is called with name empty', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          editStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          name: '',
+          cpf: 'cpf1',
+          email: 'email1',
+        },
+      })
 
-  it('Should throws an error when createStudent is called with email empty', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        createStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        name: 'name1',
-        cpf: 'cpf1',
-        email: '',
-      },
+      expect(result.errors[0].message).to.be.equal(
+        'All parameters must be passed'
+      )
     })
 
-    expect(result.errors[0].message).to.be.equal(
-      'All parameters must be passed'
-    )
-  })
+    it('Should throws an error when editStudent is called with email empty', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          editStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          name: 'name1',
+          cpf: 'cpf1',
+          email: '',
+        },
+      })
 
-  it('Should create and return one student when createStudent is called properly', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        createStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        cpf: 'cpf1',
-        name: 'name1',
-        email: 'email1',
-      },
+      expect(result.errors[0].message).to.be.equal(
+        'All parameters must be passed'
+      )
     })
 
-    expect(result.data.createStudent).to.haveOwnProperty('cpf')
-    expect(result.data.createStudent).to.haveOwnProperty('name')
-    expect(result.data.createStudent).to.haveOwnProperty('email')
-    expect(result.data.createStudent).to.be.deep.equal(createStudentValidReturn)
-  })
+    it('Should edit and return one student when editStudent is called properly', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!, $name: String!, $email: String!) {
+          editStudent(cpf: $cpf, name: $name, email: $email) {
+            cpf
+            name
+            email
+          }
+        }`,
+        variables: {
+          cpf: 'cpf1',
+          name: 'name1',
+          email: 'email1',
+        },
+      })
 
-  it('Should throws an error when editStudent is called without passing cpf', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        editStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        name: 'name1',
-        email: 'email1',
-      },
+      expect(result.data.editStudent).to.haveOwnProperty('cpf')
+      expect(result.data.editStudent).to.haveOwnProperty('name')
+      expect(result.data.editStudent).to.haveOwnProperty('email')
+      expect(result.data.editStudent).to.be.deep.equal(editStudentValidReturn)
     })
-
-    expect(result.errors[0].message).to.be.equal(
-      editStudentNoVariableError('cpf')
-    )
-  })
-
-  it('Should throws an error when editStudent is called without passing name', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        editStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        cpf: 'cpf1',
-        email: 'email1',
-      },
-    })
-
-    expect(result.errors[0].message).to.be.equal(
-      editStudentNoVariableError('name')
-    )
-  })
-
-  it('Should throws an error when editStudent is called without passing email', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        editStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        cpf: 'cpf1',
-        name: 'name1',
-      },
-    })
-
-    expect(result.errors[0].message).to.be.equal(
-      editStudentNoVariableError('email')
-    )
-  })
-
-  it('Should edit and return one student when editStudent is called properly', async () => {
-    const result = await testServer.executeOperation({
-      query: `mutation($cpf: String!, $name: String!, $email: String!) {
-        editStudent(cpf: $cpf, name: $name, email: $email) {
-          cpf
-          name
-          email
-        }
-      }`,
-      variables: {
-        cpf: 'cpf1',
-        name: 'name1',
-        email: 'email1',
-      },
-    })
-
-    expect(result.data.editStudent).to.haveOwnProperty('cpf')
-    expect(result.data.editStudent).to.haveOwnProperty('name')
-    expect(result.data.editStudent).to.haveOwnProperty('email')
-    expect(result.data.editStudent).to.be.deep.equal(editStudentValidReturn)
   })
 })
