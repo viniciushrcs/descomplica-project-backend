@@ -3,41 +3,22 @@ const { expect } = require('chai')
 const { describe, it } = require('mocha')
 const typeDefs = require('../../../../app/graphql/_typeDefs/types')
 const { mutationsMock } = require('../../../mocks')
+const { mutationResolverMock } = require('../../../mocks/resolvers')
 
 const {
   studentMutationMocks: {
     createStudentValidReturn,
     createStudentNoVariableError,
     editStudentNoVariableError,
-    createStudentEmptyVariableError,
-    editStudentEmptyVariableError,
     editStudentValidReturn,
-    deleteStudentEmptyVariableError,
     deleteStudentValidReturn,
     deleteStudentNoVariableError,
   },
 } = mutationsMock
 
-const resolversMock = {
-  Mutation: {
-    createStudent: (_, { email, name, cpf }) => {
-      if (!email || !name || !cpf) throw createStudentEmptyVariableError
-      return createStudentValidReturn
-    },
-    editStudent: (_, { email, name, cpf }) => {
-      if (!email || !name || !cpf) throw editStudentEmptyVariableError
-      return editStudentValidReturn
-    },
-    deleteStudent: (_, { cpf }) => {
-      if (!cpf) throw deleteStudentEmptyVariableError
-      return deleteStudentValidReturn
-    },
-  },
-}
-
 const testServer = new ApolloServer({
   typeDefs,
-  resolvers: resolversMock,
+  resolvers: mutationResolverMock,
   mockEntireSchema: false,
 })
 
@@ -351,6 +332,21 @@ describe('Student mutations', () => {
     })
 
     it('Should throw an error when deleteStudent is called with cpf empty', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!) {
+          deleteStudent(cpf: $cpf) 
+        }`,
+        variables: {
+          cpf: '',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        'CPF must be passed as parameter'
+      )
+    })
+
+    it('Should throw an error when deleteStudent cannot find the student to be deleted', async () => {
       const result = await testServer.executeOperation({
         query: `mutation($cpf: String!) {
           deleteStudent(cpf: $cpf) 

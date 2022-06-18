@@ -3,21 +3,15 @@ const { expect } = require('chai')
 const { describe, it } = require('mocha')
 const typeDefs = require('../../../../app/graphql/_typeDefs/types')
 const { queriesMock } = require('../../../mocks')
+const { queryResolverMock } = require('../../../mocks/resolvers')
 
 const {
   studentQueryMocks: { getStudentValidReturn, getStudentsValidReturn },
 } = queriesMock
 
-const resolversMock = {
-  Query: {
-    getStudents: () => getStudentsValidReturn,
-    getStudent: () => getStudentValidReturn,
-  },
-}
-
 const testServer = new ApolloServer({
   typeDefs,
-  resolvers: resolversMock,
+  resolvers: queryResolverMock,
   mockEntireSchema: false,
 })
 
