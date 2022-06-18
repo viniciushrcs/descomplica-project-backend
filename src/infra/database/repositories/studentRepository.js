@@ -65,6 +65,30 @@ class StudentRepository {
       )
     }
   }
+
+  async editStudent({ name = null, email = null, cpf = null }) {
+    try {
+      const response = await this.knex('student')
+        .where('cpf', cpf)
+        .orWhere('email', email)
+        .update({
+          name,
+          email,
+          cpf,
+        })
+
+      if (!response) return null
+      return {
+        name,
+        email,
+        cpf,
+      }
+    } catch (error) {
+      throw new Error(
+        'An error ocurred while trying to edit one register in student table'
+      )
+    }
+  }
 }
 
 module.exports = StudentRepository
