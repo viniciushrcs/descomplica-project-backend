@@ -239,4 +239,26 @@ describe('Student mutations', () => {
       editStudentNoVariableError('email')
     )
   })
+
+  it('Should edit and return one student when editStudent is called properly', async () => {
+    const result = await testServer.executeOperation({
+      query: `mutation($cpf: String!, $name: String!, $email: String!) {
+        editStudent(cpf: $cpf, name: $name, email: $email) {
+          cpf
+          name
+          email
+        }
+      }`,
+      variables: {
+        cpf: 'cpf1',
+        name: 'name1',
+        email: 'email1',
+      },
+    })
+
+    expect(result.data.editStudent).to.haveOwnProperty('cpf')
+    expect(result.data.editStudent).to.haveOwnProperty('name')
+    expect(result.data.editStudent).to.haveOwnProperty('email')
+    expect(result.data.editStudent).to.be.deep.equal(editStudentValidReturn)
+  })
 })
