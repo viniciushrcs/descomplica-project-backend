@@ -90,4 +90,19 @@ describe('Student Repository', () => {
       createStudentErrorReturn
     )
   })
+
+  it('Must edit and return one student when editStudent is called', async () => {
+    const {
+      studentRepositoryMocks: { editStudentValidReturn },
+    } = repositoriesMock
+
+    const studentRepository = new StudentRepository()
+
+    const stub = sinon.stub(studentRepository, 'editStudent')
+    stub.resolves(editStudentValidReturn)
+
+    const response = await studentRepository.editStudent()
+
+    expect(response).to.be.deep.equal(editStudentValidReturn)
+  })
 })

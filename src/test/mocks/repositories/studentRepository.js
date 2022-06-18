@@ -25,9 +25,28 @@ const getStudentErrorReturn = new Error(
   'An error ocurred while trying to get one register from student table'
 )
 
+const createStudentErrorReturn = new Error(
+  'An error ocurred while trying to insert one register in student table'
+)
+
+const createStudentValidReturn = {
+  cpf: 'cpf4',
+  name: 'name4',
+  email: 'email4',
+}
+
+const editStudentValidReturn = {
+  cpf: 'cpf5',
+  name: 'name5',
+  email: 'email5',
+}
+
 module.exports = {
   getAllValidReturn,
   getStudentValidReturn,
   getAllErrorReturn,
   getStudentErrorReturn,
+  createStudentErrorReturn,
+  createStudentValidReturn,
+  editStudentValidReturn,
 }
