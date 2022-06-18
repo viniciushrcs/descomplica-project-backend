@@ -14,6 +14,7 @@ const {
     editStudentValidReturn,
     deleteStudentEmptyVariableError,
     deleteStudentValidReturn,
+    deleteStudentNoVariableError,
   },
 } = mutationsMock
 
@@ -338,6 +339,17 @@ describe('Student mutations', () => {
   })
 
   describe('deleteStudent', () => {
+    it('Should throw an error when deleteStudent is called without passing cpf', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!) {
+          deleteStudent(cpf: $cpf) 
+        }`,
+        variables: {},
+      })
+
+      expect(result.errors[0].message).to.be.equal(deleteStudentNoVariableError)
+    })
+
     it('Should delete one student when deleteStudent is called properly', async () => {
       const result = await testServer.executeOperation({
         query: `mutation($cpf: String!) {

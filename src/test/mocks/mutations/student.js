@@ -24,6 +24,8 @@ const editStudentValidReturn = {
 
 const deleteStudentValidReturn = true
 
+const deleteStudentNoVariableError = `Variable "$cpf" of required type "String!" was not provided.`
+
 const deleteStudentEmptyVariableError = new Error(
   'CPF must be passed as parameter'
 )
@@ -37,4 +39,5 @@ module.exports = {
   editStudentValidReturn,
   deleteStudentValidReturn,
   deleteStudentEmptyVariableError,
+  deleteStudentNoVariableError,
 }
