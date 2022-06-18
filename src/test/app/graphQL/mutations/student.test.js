@@ -350,6 +350,21 @@ describe('Student mutations', () => {
       expect(result.errors[0].message).to.be.equal(deleteStudentNoVariableError)
     })
 
+    it('Should throw an error when deleteStudent is called with cpf empty', async () => {
+      const result = await testServer.executeOperation({
+        query: `mutation($cpf: String!) {
+          deleteStudent(cpf: $cpf) 
+        }`,
+        variables: {
+          cpf: '',
+        },
+      })
+
+      expect(result.errors[0].message).to.be.equal(
+        'CPF must be passed as parameter'
+      )
+    })
+
     it('Should delete one student when deleteStudent is called properly', async () => {
       const result = await testServer.executeOperation({
         query: `mutation($cpf: String!) {
