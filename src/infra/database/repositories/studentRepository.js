@@ -8,10 +8,12 @@ class StudentRepository {
 
   async getAll() {
     try {
-      const response = await this.knex('student')
+      const response = await this.knex('student').returning('*')
+
       if (!response || response.length === 0) return null
       return response
     } catch (error) {
+      console.error(error)
       throw new Error(
         'An error ocurred while trying to get all registers from student table'
       )
@@ -20,24 +22,27 @@ class StudentRepository {
 
   async getStudent(filter) {
     try {
-      const { name = null, cpf = null, email = null } = filter
-      const response = await this.knex('student').where((query) => {
-        if (name) {
-          query.where('name', name)
-        }
+      const { name, cpf, email } = filter
+      const response = await this.knex('student')
+        .returning('*')
+        .where((query) => {
+          if (name) {
+            query.where('name', name)
+          }
 
-        if (cpf) {
-          query.where('cpf', cpf)
-        }
+          if (cpf) {
+            query.where('cpf', cpf)
+          }
 
-        if (email) {
-          query.where('email', email)
-        }
-      })
+          if (email) {
+            query.where('email', email)
+          }
+        })
 
       if (!response[0]) return null
       return response[0]
     } catch (error) {
+      console.error(error)
       throw new Error(
         'An error ocurred while trying to get one register from student table'
       )
