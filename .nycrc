@@ -1,5 +1,6 @@
 {
   "all": true,
   "include": ["src/app/graphql/**/**/*.js", "src/infra/database/repositories/*.js"],
-  "exclude": ["src/app/graphql/_typeDefs", "src/app/graphql/resolvers/index.js", "src/infra/database/repositories/connection.js"]
+  "exclude": ["src/app/graphql/_typeDefs", "src/app/graphql/resolvers/index.js", "src/infra/database/repositories/connection.js"],
+  "reporter": ["html", "text"]
 }
