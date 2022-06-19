@@ -1,19 +1,15 @@
-const StudentRepository = require('../../../../infra/database/repositories/studentRepository')
+const StudentService = require('../../services/studentService')
 
-const studentRepository = new StudentRepository()
+const studentService = new StudentService()
 
 const queries = {
   async getStudents() {
-    const students = await studentRepository.getAll()
+    const students = await studentService.getStudents()
     return students
   },
 
-  async getStudent(_, { name, cpf, email }) {
-    const student = await studentRepository.getStudent({
-      name,
-      cpf,
-      email,
-    })
+  async getStudent(_, filter) {
+    const student = await studentService.getStudent(filter)
     return student
   },
 }
