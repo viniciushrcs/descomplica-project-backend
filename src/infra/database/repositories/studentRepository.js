@@ -49,8 +49,9 @@ class StudentRepository {
     }
   }
 
-  async createStudent({ name = null, email = null, cpf = null }) {
+  async createStudent(filter) {
     try {
+      const { name, email, cpf } = filter
       const response = await this.knex('student').insert({
         id: generateNewUUID(),
         name,
@@ -65,14 +66,16 @@ class StudentRepository {
         cpf,
       }
     } catch (error) {
+      console.error(error)
       throw new Error(
         'An error ocurred while trying to insert one register in student table'
       )
     }
   }
 
-  async editStudent({ name = null, email = null, cpf = null }) {
+  async editStudent(student) {
     try {
+      const { name, email, cpf } = student
       const response = await this.knex('student').where('cpf', cpf).update({
         name,
         email,
@@ -80,29 +83,23 @@ class StudentRepository {
       })
 
       if (!response) return null
-      return {
-        name,
-        email,
-        cpf,
-      }
+      return student
     } catch (error) {
+      console.error(error)
       throw new Error(
         'An error ocurred while trying to edit one register in student table'
       )
     }
   }
 
-  async deleteStudent({ name = null, email = null, cpf = null }) {
+  async deleteStudent(cpf) {
     try {
       const response = await this.knex('student').where('cpf', cpf).delete()
 
       if (!response) return null
-      return {
-        name,
-        email,
-        cpf,
-      }
+      return true
     } catch (error) {
+      console.error(error)
       throw new Error(
         'An error ocurred while trying to delete one register in student table'
       )
