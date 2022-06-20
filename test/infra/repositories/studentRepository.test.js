@@ -219,6 +219,16 @@ describe('Student Repository', () => {
       expect(response).to.be.deep.equal(deleteStudentValidReturn)
     })
 
+    it('Must return null when there is no response from database', async () => {
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        where: knexStub.where.returnsThis(),
+        delete: knexStub.update.resolves(),
+      }))
+      const response = await studentRepository.deleteStudent(cpf)
+
+      expect(response).to.be.deep.equal(null)
+    })
+
     it('Must throw an error when deleteStudent throws an error', async () => {
       const {
         studentRepositoryMocks: { deleteStudentErrorReturn },
