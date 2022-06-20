@@ -3,7 +3,7 @@ const { describe, it, before, beforeEach, afterEach } = require('mocha')
 const sinon = require('sinon')
 const StudentService = require('../../../../src/app/graphql/services/studentService')
 const StudentRepository = require('../../../../src/infra/database/repositories/studentRepository')
-const { repositoriesMock } = require('../../../mocks')
+const { repositoriesMock, servicesMock } = require('../../../mocks')
 
 describe('Student Service', () => {
   let studentService = {}
@@ -33,6 +33,33 @@ describe('Student Service', () => {
       const response = await studentService.getStudents()
 
       expect(response).to.be.deep.equal(getAllValidReturn)
+    })
+
+    it('Must return all students when getStudents is called', async () => {
+      const {
+        studentServiceMock: { getStudentsValidReturn },
+      } = servicesMock
+
+      studentService.studentRepository.getAll.resolves(getStudentsValidReturn)
+
+      const response = await studentService.getStudents()
+
+      expect(response).to.be.deep.equal(getStudentsValidReturn)
+    })
+
+    it('Must throw an error when getStudents throws', async () => {
+      const {
+        studentServiceMock: { getStudentsErrorReturn },
+      } = servicesMock
+
+      studentService.studentRepository.getAll.rejects(getStudentsErrorReturn)
+
+      studentService
+        .getStudents()
+        .then()
+        .catch((value) =>
+          expect(value).to.be.deep.equal(getStudentsErrorReturn)
+        )
     })
   })
 })

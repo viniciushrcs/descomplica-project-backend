@@ -18,15 +18,15 @@ const getStudentValidReturn = {
 }
 
 const getStudentsErrorReturn = new Error(
-  'An error ocurred while trying to get all registers from student table'
+  'Error: An error ocurred while trying to get all registers from student table'
 )
 
 const getStudentErrorReturn = new Error(
-  'An error ocurred while trying to get one register from student table'
+  'Error: An error ocurred while trying to get one register from student table'
 )
 
 const createStudentErrorReturn = new Error(
-  'An error ocurred while trying to insert one register in student table'
+  'Error: An error ocurred while trying to insert one register in student table'
 )
 
 const createStudentValidReturn = {
