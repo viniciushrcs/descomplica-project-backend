@@ -128,6 +128,15 @@ describe('Student Repository', () => {
       expect(response).to.be.deep.equal(createStudentValidReturn)
     })
 
+    it('Must return null when there is no response from database', async () => {
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        insert: knexStub.insert.resolves(),
+      }))
+      const response = await studentRepository.createStudent(newStudent)
+
+      expect(response).to.be.deep.equal(null)
+    })
+
     it('Must throw an error when createStudent throws an error', async () => {
       const {
         studentRepositoryMocks: { createStudentErrorReturn },
