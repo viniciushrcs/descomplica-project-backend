@@ -35,6 +35,15 @@ describe('Student Repository', () => {
       expect(response).to.be.deep.equal(getAllValidReturn)
     })
 
+    it('Must return null when it does not exist a register in database', async () => {
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        returning: knexStub.returning.resolves(),
+      }))
+      const response = await studentRepository.getAll()
+
+      expect(response).to.be.deep.equal(null)
+    })
+
     it('Must throw an error when getAll throws an error', async () => {
       const {
         studentRepositoryMocks: { getAllErrorReturn },
