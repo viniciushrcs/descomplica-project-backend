@@ -151,4 +151,27 @@ describe('Student Service', () => {
         )
     })
   })
+
+  describe('editStudent', () => {
+    const student = {
+      cpf: 'cpf5',
+      name: 'name5',
+      email: 'email5',
+    }
+    it('Must edit a student when editStudent is called', async () => {
+      const {
+        studentServiceMock: { editStudentValidReturn },
+      } = servicesMock
+
+      studentService.studentRepository.getStudent.resolves(student)
+
+      studentService.studentRepository.editStudent.resolves(
+        editStudentValidReturn
+      )
+
+      const response = await studentService.editStudent(student)
+
+      expect(response).to.be.deep.equal(student)
+    })
+  })
 })
