@@ -166,17 +166,19 @@ describe('Student Repository', () => {
   })
 
   describe('deleteStudent', () => {
+    const cpf = 'cpf5'
+
     it('Must delete one student when deleteStudent is called', async () => {
       const {
         studentRepositoryMocks: { deleteStudentValidReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        where: knexStub.where.returnsThis(),
+        delete: knexStub.update.resolves(1),
+      }))
 
-      const stub = sinon.stub(studentRepository, 'deleteStudent')
-      stub.resolves(deleteStudentValidReturn)
-
-      const response = await studentRepository.deleteStudent()
+      const response = await studentRepository.deleteStudent(cpf)
 
       expect(response).to.be.deep.equal(deleteStudentValidReturn)
     })
@@ -186,14 +188,15 @@ describe('Student Repository', () => {
         studentRepositoryMocks: { deleteStudentErrorReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        where: knexStub.where.returnsThis(),
+        delete: knexStub.update.rejects(),
+      }))
 
-      const stub = sinon.stub(studentRepository, 'deleteStudent')
-      stub.throws(deleteStudentErrorReturn)
-
-      expect(() => studentRepository.deleteStudent()).to.throw(
-        deleteStudentErrorReturn
-      )
+      studentRepository
+        .deleteStudent(cpf)
+        .then()
+        .catch((value) => expect(value).to.be.equal(deleteStudentErrorReturn))
     })
   })
 })

@@ -45,11 +45,7 @@ const editStudentErrorReturn = new Error(
   'An error ocurred while trying to edit one register in student table'
 )
 
-const deleteStudentValidReturn = {
-  cpf: 'cpf5',
-  name: 'name5',
-  email: 'email5',
-}
+const deleteStudentValidReturn = true
 
 const deleteStudentErrorReturn = new Error(
   'An error ocurred while trying to delete one register in student table'
