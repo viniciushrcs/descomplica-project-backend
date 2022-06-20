@@ -128,17 +128,22 @@ describe('Student Repository', () => {
   })
 
   describe('editStudent', () => {
+    const student = {
+      cpf: 'cpf5',
+      name: 'name5',
+      email: 'email5',
+    }
     it('Must edit and return one student when editStudent is called', async () => {
       const {
         studentRepositoryMocks: { editStudentValidReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        where: knexStub.where.returnsThis(),
+        update: knexStub.update.resolves(1),
+      }))
 
-      const stub = sinon.stub(studentRepository, 'editStudent')
-      stub.resolves(editStudentValidReturn)
-
-      const response = await studentRepository.editStudent()
+      const response = await studentRepository.editStudent(student)
 
       expect(response).to.be.deep.equal(editStudentValidReturn)
     })
@@ -148,14 +153,15 @@ describe('Student Repository', () => {
         studentRepositoryMocks: { editStudentErrorReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        where: knexStub.where.returnsThis(),
+        update: knexStub.update.rejects(),
+      }))
 
-      const stub = sinon.stub(studentRepository, 'editStudent')
-      stub.throws(editStudentErrorReturn)
-
-      expect(() => studentRepository.editStudent()).to.throw(
-        editStudentErrorReturn
-      )
+      studentRepository
+        .editStudent(student)
+        .then()
+        .catch((value) => expect(value).to.be.equal(editStudentErrorReturn))
     })
   })
 
