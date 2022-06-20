@@ -23,30 +23,25 @@ describe('Student Service', () => {
   })
 
   describe('getStudents', () => {
+    const {
+      studentServiceMock: { getStudents },
+    } = servicesMock
     it('Must return all students when getStudents is called', async () => {
-      const {
-        studentServiceMock: { getStudentsValidReturn },
-      } = servicesMock
-
-      studentService.studentRepository.getAll.resolves(getStudentsValidReturn)
+      studentService.studentRepository.getAll.resolves(getStudents.validReturn)
 
       const response = await studentService.getStudents()
 
-      expect(response).to.be.deep.equal(getStudentsValidReturn)
+      expect(response).to.be.deep.equal(getStudents.validReturn)
     })
 
     it('Must throw an error when getStudents throws', async () => {
-      const {
-        studentServiceMock: { getStudentsErrorReturn },
-      } = servicesMock
-
-      studentService.studentRepository.getAll.rejects(getStudentsErrorReturn)
+      studentService.studentRepository.getAll.rejects(getStudents.errorReturn)
 
       studentService
         .getStudents()
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(getStudentsErrorReturn)
+          expect(value).to.be.deep.equal(getStudents.errorReturn)
         )
     })
   })
@@ -57,31 +52,30 @@ describe('Student Service', () => {
       name: 'name3',
       email: 'email3',
     }
+    const {
+      studentServiceMock: { getStudent },
+    } = servicesMock
     it('Must return one student when getStudent is called', async () => {
-      const {
-        studentServiceMock: { getStudentValidReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves(
-        getStudentValidReturn
+        getStudent.validReturn
       )
 
       const response = await studentService.getStudent(filter)
 
-      expect(response).to.be.deep.equal(getStudentValidReturn)
+      expect(response).to.be.deep.equal(getStudent.validReturn)
     })
 
     it('Must throw an error when getStudent throws', async () => {
-      const {
-        studentServiceMock: { getStudentErrorReturn },
-      } = servicesMock
-
-      studentService.studentRepository.getStudent.rejects(getStudentErrorReturn)
+      studentService.studentRepository.getStudent.rejects(
+        getStudent.errorReturn
+      )
 
       studentService
         .getStudent(filter)
         .then()
-        .catch((value) => expect(value).to.be.deep.equal(getStudentErrorReturn))
+        .catch((value) =>
+          expect(value).to.be.deep.equal(getStudent.errorReturn)
+        )
     })
   })
 
@@ -91,15 +85,14 @@ describe('Student Service', () => {
       name: 'name4',
       email: 'email4',
     }
+    const {
+      studentServiceMock: { createStudent },
+    } = servicesMock
     it('Must create a new student when createStudent is called', async () => {
-      const {
-        studentServiceMock: { createStudentValidReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves()
 
       studentService.studentRepository.createStudent.resolves(
-        createStudentValidReturn
+        createStudent.validReturn
       )
 
       const response = await studentService.createStudent(newStudent)
@@ -108,38 +101,26 @@ describe('Student Service', () => {
     })
 
     it('Must throw an error when createStudent is called without any parameter', async () => {
-      const {
-        studentServiceMock: { createStudentErrorNoParameterReturn },
-      } = servicesMock
-
       studentService
         .createStudent({})
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(createStudentErrorNoParameterReturn)
+          expect(value).to.be.deep.equal(createStudent.noParameterErrorReturn)
         )
     })
 
     it('Must throw an error when student is already registered', async () => {
-      const {
-        studentServiceMock: { createStudentErrorAlreadyExistsReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves(true)
 
       studentService
         .createStudent(newStudent)
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(createStudentErrorAlreadyExistsReturn)
+          expect(value).to.be.deep.equal(createStudent.alreadyExistsErrorReturn)
         )
     })
 
     it('Must throw an error when studentRepository.createStudent throws', async () => {
-      const {
-        studentServiceMock: { createStudentErrorReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves()
       studentService.studentRepository.createStudent.rejects()
 
@@ -147,7 +128,7 @@ describe('Student Service', () => {
         .createStudent(newStudent)
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(createStudentErrorReturn)
+          expect(value).to.be.deep.equal(createStudent.errorReturn)
         )
     })
   })
@@ -158,15 +139,14 @@ describe('Student Service', () => {
       name: 'name5',
       email: 'email5',
     }
+    const {
+      studentServiceMock: { editStudent },
+    } = servicesMock
     it('Must edit a student when editStudent is called', async () => {
-      const {
-        studentServiceMock: { editStudentValidReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves(student)
 
       studentService.studentRepository.editStudent.resolves(
-        editStudentValidReturn
+        editStudent.validReturn
       )
 
       const response = await studentService.editStudent(student)
@@ -175,37 +155,27 @@ describe('Student Service', () => {
     })
 
     it('Must throw an error when editStudent is called without any parameter', async () => {
-      const {
-        studentServiceMock: { editStudentErrorNoParameterReturn },
-      } = servicesMock
-
       studentService
         .editStudent({})
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(editStudentErrorNoParameterReturn)
+          expect(value).to.be.deep.equal(editStudent.noParameterErrorReturn)
         )
     })
 
     it('Must throw an error when student is not registered', async () => {
-      const {
-        studentServiceMock: { editStudentErrorNotExistsReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves()
 
       studentService
         .editStudent(student)
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(editStudentErrorNotExistsReturn)
+          expect(value).to.be.deep.equal(
+            editStudent.studentNotExistsErrorReturn
+          )
         )
     })
     it('Must throw an error when studentRepository.editStudent throws', async () => {
-      const {
-        studentServiceMock: { editStudentErrorReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves(student)
       studentService.studentRepository.editStudent.rejects()
 
@@ -213,7 +183,7 @@ describe('Student Service', () => {
         .editStudent(student)
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(editStudentErrorReturn)
+          expect(value).to.be.deep.equal(editStudent.errorReturn)
         )
     })
   })
@@ -224,53 +194,42 @@ describe('Student Service', () => {
       name: 'name5',
       email: 'email5',
     }
+    const {
+      studentServiceMock: { deleteStudent },
+    } = servicesMock
     it('Must delete a student when deleteStudent is called', async () => {
-      const {
-        studentServiceMock: { deleteStudentValidReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves(student)
 
       studentService.studentRepository.deleteStudent.resolves(true)
 
       const response = await studentService.deleteStudent(student)
 
-      expect(response).to.be.equal(deleteStudentValidReturn)
+      expect(response).to.be.equal(deleteStudent.validReturn)
     })
 
     it('Must throw an error when deleteStudent is called without CPF as a parameter', async () => {
-      const {
-        studentServiceMock: { deleteStudentErrorNoParameterReturn },
-      } = servicesMock
-
       studentService
         .deleteStudent({})
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(deleteStudentErrorNoParameterReturn)
+          expect(value).to.be.deep.equal(deleteStudent.noParameterErrorReturn)
         )
     })
 
     it('Must throw an error when student is not registered', async () => {
-      const {
-        studentServiceMock: { deleteStudentErrorNotExistsReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves()
 
       studentService
         .deleteStudent(student)
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(deleteStudentErrorNotExistsReturn)
+          expect(value).to.be.deep.equal(
+            deleteStudent.studentNotExistsErrorReturn
+          )
         )
     })
 
     it('Must throw an error when studentRepository.deleteStudent throws', async () => {
-      const {
-        studentServiceMock: { deleteStudentErrorReturn },
-      } = servicesMock
-
       studentService.studentRepository.getStudent.resolves(student)
       studentService.studentRepository.deleteStudent.rejects()
 
@@ -278,7 +237,7 @@ describe('Student Service', () => {
         .deleteStudent(student)
         .then()
         .catch((value) =>
-          expect(value).to.be.deep.equal(deleteStudentErrorReturn)
+          expect(value).to.be.deep.equal(deleteStudent.errorReturn)
         )
     })
   })
