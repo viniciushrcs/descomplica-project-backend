@@ -92,17 +92,21 @@ describe('Student Repository', () => {
   })
 
   describe('createStudent', () => {
+    const newStudent = {
+      cpf: 'cpf4',
+      name: 'name4',
+      email: 'email4',
+    }
     it('Must create one student when createStudent is called', async () => {
       const {
         studentRepositoryMocks: { createStudentValidReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        insert: knexStub.insert.resolves(1),
+      }))
 
-      const stub = sinon.stub(studentRepository, 'createStudent')
-      stub.resolves(createStudentValidReturn)
-
-      const response = await studentRepository.createStudent()
+      const response = await studentRepository.createStudent(newStudent)
 
       expect(response).to.be.deep.equal(createStudentValidReturn)
     })
@@ -112,14 +116,14 @@ describe('Student Repository', () => {
         studentRepositoryMocks: { createStudentErrorReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        insert: knexStub.insert.rejects(),
+      }))
 
-      const stub = sinon.stub(studentRepository, 'createStudent')
-      stub.throws(createStudentErrorReturn)
-
-      expect(() => studentRepository.createStudent()).to.throw(
-        createStudentErrorReturn
-      )
+      studentRepository
+        .createStudent(newStudent)
+        .then()
+        .catch((value) => expect(value).to.be.equal(createStudentErrorReturn))
     })
   })
 
