@@ -35,16 +35,20 @@ const editStudentErrorNoParameterReturn = new UserInputError(
   'All parameters must be passed'
 )
 
+const deleteStudentErrorNoParameterReturn = new UserInputError(
+  'CPF must be passed'
+)
+
 const createStudentErrorReturn = new Error(
   'Error: An error ocurred while trying to insert one register in student table'
 )
 
 const createStudentErrorAlreadyExistsReturn = new Error(
-  'User already registered, try to edit'
+  'Student already registered, try to edit'
 )
 
 const editStudentErrorNotExistsReturn = new Error(
-  'User does not exist, try to create a new student'
+  'Student does not exist, try to create a new student'
 )
 
 const createStudentValidReturn = {
@@ -65,6 +69,10 @@ const editStudentErrorReturn = new Error(
 
 const deleteStudentValidReturn = true
 
+const deleteStudentErrorNotExistsReturn = new Error(
+  'Student cannot be deleted since it does not exist'
+)
+
 const deleteStudentErrorReturn = new Error(
   'An error ocurred while trying to delete one register in student table'
 )
@@ -84,4 +92,6 @@ module.exports = {
   createStudentErrorAlreadyExistsReturn,
   editStudentErrorNoParameterReturn,
   editStudentErrorNotExistsReturn,
+  deleteStudentErrorNotExistsReturn,
+  deleteStudentErrorNoParameterReturn,
 }

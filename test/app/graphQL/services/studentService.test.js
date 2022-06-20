@@ -217,4 +217,25 @@ describe('Student Service', () => {
         )
     })
   })
+
+  describe('deleteStudent', () => {
+    const student = {
+      cpf: 'cpf5',
+      name: 'name5',
+      email: 'email5',
+    }
+    it('Must delete a student when deleteStudent is called', async () => {
+      const {
+        studentServiceMock: { deleteStudentValidReturn },
+      } = servicesMock
+
+      studentService.studentRepository.getStudent.resolves(student)
+
+      studentService.studentRepository.deleteStudent.resolves(true)
+
+      const response = await studentService.deleteStudent(student)
+
+      expect(response).to.be.equal(deleteStudentValidReturn)
+    })
+  })
 })
