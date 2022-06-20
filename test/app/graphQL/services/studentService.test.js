@@ -70,5 +70,18 @@ describe('Student Service', () => {
 
       expect(response).to.be.deep.equal(getStudentValidReturn)
     })
+
+    it('Must throw an error when getStudent throws', async () => {
+      const {
+        studentServiceMock: { getStudentErrorReturn },
+      } = servicesMock
+
+      studentService.studentRepository.getStudent.rejects(getStudentErrorReturn)
+
+      studentService
+        .getStudent(filter)
+        .then()
+        .catch((value) => expect(value).to.be.deep.equal(getStudentErrorReturn))
+    })
   })
 })
