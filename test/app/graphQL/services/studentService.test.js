@@ -237,5 +237,18 @@ describe('Student Service', () => {
 
       expect(response).to.be.equal(deleteStudentValidReturn)
     })
+
+    it('Must throw an error when deleteStudent is called without CPF as a parameter', async () => {
+      const {
+        studentServiceMock: { deleteStudentErrorNoParameterReturn },
+      } = servicesMock
+
+      studentService
+        .deleteStudent({})
+        .then()
+        .catch((value) =>
+          expect(value).to.be.deep.equal(deleteStudentErrorNoParameterReturn)
+        )
+    })
   })
 })
