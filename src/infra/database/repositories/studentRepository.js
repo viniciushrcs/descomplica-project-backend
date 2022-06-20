@@ -12,7 +12,6 @@ class StudentRepository {
       if (!response || response.length === 0) return null
       return response
     } catch (error) {
-      console.error(error)
       throw new Error(
         'An error ocurred while trying to get all registers from student table'
       )
@@ -41,7 +40,6 @@ class StudentRepository {
       if (!response[0]) return null
       return response[0]
     } catch (error) {
-      console.error(error)
       throw new Error(
         'An error ocurred while trying to get one register from student table'
       )
@@ -65,7 +63,6 @@ class StudentRepository {
         cpf,
       }
     } catch (error) {
-      console.error(error)
       throw new Error(
         'An error ocurred while trying to insert one register in student table'
       )
@@ -84,7 +81,6 @@ class StudentRepository {
       if (!response) return null
       return student
     } catch (error) {
-      console.error(error)
       throw new Error(
         'An error ocurred while trying to edit one register in student table'
       )
@@ -98,7 +94,6 @@ class StudentRepository {
       if (!response) return null
       return true
     } catch (error) {
-      console.error(error)
       throw new Error(
         'An error ocurred while trying to delete one register in student table'
       )
