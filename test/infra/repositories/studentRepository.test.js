@@ -63,6 +63,9 @@ describe('Student Repository', () => {
   })
 
   describe('getStudent', () => {
+    const filter = {
+      cpf: 'cpf3',
+    }
     it('Must return one student when getStudent is called', async () => {
       const {
         studentRepositoryMocks: { getStudentValidReturn },
@@ -72,12 +75,20 @@ describe('Student Repository', () => {
         returning: knexStub.returning.returnsThis(),
         where: knexStub.where.resolves([getStudentValidReturn]),
       }))
-      const filter = {
-        cpf: 'cpf3',
-      }
+
       const response = await studentRepository.getStudent(filter)
 
       expect(response).to.be.deep.equal(getStudentValidReturn)
+    })
+
+    it('Must return null when it does not exist a register in database', async () => {
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        returning: knexStub.returning.returnsThis(),
+        where: knexStub.where.resolves([]),
+      }))
+      const response = await studentRepository.getStudent(filter)
+
+      expect(response).to.be.deep.equal(null)
     })
 
     it('Must throw an error when getStudent throws an error', async () => {
@@ -89,9 +100,6 @@ describe('Student Repository', () => {
         returning: knexStub.returning.returnsThis(),
         where: knexStub.where.rejects(),
       }))
-      const filter = {
-        cpf: 'cpf3',
-      }
 
       studentRepository
         .getStudent(filter)
