@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "coverage": "nyc npm run test",
-    "test": "mocha --recursive src --extension .test.js --timeout 10000 --exit",
+    "test": "mocha --recursive test --extension .test.js --timeout 10000 --exit",
     "start": "node src/index.js",
     "start:dev": "nodemon src/index.js",
     "knex:make": "npx knex --knexfile knexFile.js migrate:make",
