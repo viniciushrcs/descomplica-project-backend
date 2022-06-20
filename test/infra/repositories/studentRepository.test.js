@@ -174,6 +174,16 @@ describe('Student Repository', () => {
       expect(response).to.be.deep.equal(editStudentValidReturn)
     })
 
+    it('Must return null when there is no response from database', async () => {
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        where: knexStub.where.returnsThis(),
+        update: knexStub.update.resolves(),
+      }))
+      const response = await studentRepository.editStudent(student)
+
+      expect(response).to.be.deep.equal(null)
+    })
+
     it('Must throw an error when editStudent throws an error', async () => {
       const {
         studentRepositoryMocks: { editStudentErrorReturn },
