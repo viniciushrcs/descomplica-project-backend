@@ -31,6 +31,10 @@ const createStudentErrorNoParameterReturn = new UserInputError(
   'All parameters must be passed'
 )
 
+const editStudentErrorNoParameterReturn = new UserInputError(
+  'All parameters must be passed'
+)
+
 const createStudentErrorReturn = new Error(
   'Error: An error ocurred while trying to insert one register in student table'
 )
@@ -74,4 +78,5 @@ module.exports = {
   deleteStudentErrorReturn,
   createStudentErrorNoParameterReturn,
   createStudentErrorAlreadyExistsReturn,
+  editStudentErrorNoParameterReturn,
 }

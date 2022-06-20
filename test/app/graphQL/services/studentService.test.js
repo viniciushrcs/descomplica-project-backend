@@ -173,5 +173,18 @@ describe('Student Service', () => {
 
       expect(response).to.be.deep.equal(student)
     })
+
+    it('Must throw an error when editStudent is called without any parameter', async () => {
+      const {
+        studentServiceMock: { editStudentErrorNoParameterReturn },
+      } = servicesMock
+
+      studentService
+        .editStudent({})
+        .then()
+        .catch((value) =>
+          expect(value).to.be.deep.equal(editStudentErrorNoParameterReturn)
+        )
+    })
   })
 })
