@@ -59,12 +59,14 @@ describe('Student Repository', () => {
         studentRepositoryMocks: { getStudentValidReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
-
-      const stub = sinon.stub(studentRepository, 'getStudent')
-      stub.resolves(getStudentValidReturn)
-
-      const response = await studentRepository.getStudent()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        returning: knexStub.returning.returnsThis(),
+        where: knexStub.where.resolves([getStudentValidReturn]),
+      }))
+      const filter = {
+        cpf: 'cpf3',
+      }
+      const response = await studentRepository.getStudent(filter)
 
       expect(response).to.be.deep.equal(getStudentValidReturn)
     })
@@ -74,12 +76,18 @@ describe('Student Repository', () => {
         studentRepositoryMocks: { getStudentErrorReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        returning: knexStub.returning.returnsThis(),
+        where: knexStub.where.rejects(),
+      }))
+      const filter = {
+        cpf: 'cpf3',
+      }
 
-      const stub = sinon.stub(studentRepository, 'getAll')
-      stub.throws(getStudentErrorReturn)
-
-      expect(() => studentRepository.getAll()).to.throw(getStudentErrorReturn)
+      studentRepository
+        .getStudent(filter)
+        .then()
+        .catch((value) => expect(value).to.be.equal(getStudentErrorReturn))
     })
   })
 
