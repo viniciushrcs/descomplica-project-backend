@@ -1,21 +1,35 @@
 const { expect } = require('chai')
-const { describe, it } = require('mocha')
+const { describe, it, before, beforeEach, afterEach } = require('mocha')
 const sinon = require('sinon')
-const StudentRepository = require('../../../infra/database/repositories/studentRepository')
+const StudentRepository = require('../../../src/infra/database/repositories/studentRepository')
+const knex = require('../../../src/infra/database/repositories/connection')
 const { repositoriesMock } = require('../../mocks')
 
 describe('Student Repository', () => {
+  let studentRepository = {}
+  let sandbox = {}
+  const knexStub = sinon.stub(knex)
+  before(() => {
+    studentRepository = new StudentRepository(knexStub)
+  })
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox()
+  })
+
+  afterEach(() => {
+    sandbox.restore()
+  })
+
   describe('getAll', () => {
     it('Must return all students when getAll is called', async () => {
       const {
         studentRepositoryMocks: { getAllValidReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
-
-      const stub = sinon.stub(studentRepository, 'getAll')
-      stub.resolves(getAllValidReturn)
-
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        returning: knexStub.returning.resolves(getAllValidReturn),
+      }))
       const response = await studentRepository.getAll()
 
       expect(response).to.be.deep.equal(getAllValidReturn)
@@ -26,12 +40,16 @@ describe('Student Repository', () => {
         studentRepositoryMocks: { getAllErrorReturn },
       } = repositoriesMock
 
-      const studentRepository = new StudentRepository()
+      sandbox.stub(studentRepository, 'db').callsFake(() => ({
+        returning: knexStub.returning.rejects(),
+      }))
 
-      const stub = sinon.stub(studentRepository, 'getAll')
-      stub.throws(getAllErrorReturn)
-
-      expect(() => studentRepository.getAll()).to.throw(getAllErrorReturn)
+      studentRepository
+        .getAll()
+        .then()
+        .catch((value) => {
+          expect(value).to.be.equal(getAllErrorReturn)
+        })
     })
   })
 
