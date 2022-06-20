@@ -1,14 +1,13 @@
 const { v4: generateNewUUID } = require('uuid')
-const knex = require('./connection')
 
 class StudentRepository {
-  constructor() {
-    this.knex = knex
+  constructor(db) {
+    this.db = db
   }
 
   async getAll() {
     try {
-      const response = await this.knex('student').returning('*')
+      const response = await this.db('student').returning('*')
 
       if (!response || response.length === 0) return null
       return response
@@ -23,7 +22,7 @@ class StudentRepository {
   async getStudent(filter) {
     try {
       const { name, cpf, email } = filter
-      const response = await this.knex('student')
+      const response = await this.db('student')
         .returning('*')
         .where((query) => {
           if (name) {
@@ -52,7 +51,7 @@ class StudentRepository {
   async createStudent(filter) {
     try {
       const { name, email, cpf } = filter
-      const response = await this.knex('student').insert({
+      const response = await this.db('student').insert({
         id: generateNewUUID(),
         name,
         email,
@@ -76,7 +75,7 @@ class StudentRepository {
   async editStudent(student) {
     try {
       const { name, email, cpf } = student
-      const response = await this.knex('student').where('cpf', cpf).update({
+      const response = await this.db('student').where('cpf', cpf).update({
         name,
         email,
         cpf,
@@ -94,7 +93,7 @@ class StudentRepository {
 
   async deleteStudent(cpf) {
     try {
-      const response = await this.knex('student').where('cpf', cpf).delete()
+      const response = await this.db('student').where('cpf', cpf).delete()
 
       if (!response) return null
       return true

@@ -1,9 +1,10 @@
 const { ApolloError, UserInputError } = require('apollo-server')
 const StudentRepository = require('../../../infra/database/repositories/studentRepository')
+const knex = require('../../../infra/database/repositories/connection')
 
 class StudentService {
   constructor() {
-    this.studentRepository = new StudentRepository()
+    this.studentRepository = new StudentRepository(knex)
   }
 
   async getStudents() {
