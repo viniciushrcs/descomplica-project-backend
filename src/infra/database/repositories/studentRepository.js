@@ -48,9 +48,9 @@ class StudentRepository {
     }
   }
 
-  async createStudent(filter) {
+  async createStudent(newStudent) {
     try {
-      const { name, email, cpf } = filter
+      const { name, email, cpf } = newStudent
       const response = await this.db('student').insert({
         id: generateNewUUID(),
         name,
