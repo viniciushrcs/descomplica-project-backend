@@ -43,6 +43,10 @@ const createStudentErrorAlreadyExistsReturn = new Error(
   'User already registered, try to edit'
 )
 
+const editStudentErrorNotExistsReturn = new Error(
+  'User does not exist, try to create a new student'
+)
+
 const createStudentValidReturn = {
   cpf: 'cpf4',
   name: 'name4',
@@ -79,4 +83,5 @@ module.exports = {
   createStudentErrorNoParameterReturn,
   createStudentErrorAlreadyExistsReturn,
   editStudentErrorNoParameterReturn,
+  editStudentErrorNotExistsReturn,
 }

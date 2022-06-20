@@ -186,5 +186,20 @@ describe('Student Service', () => {
           expect(value).to.be.deep.equal(editStudentErrorNoParameterReturn)
         )
     })
+
+    it('Must throw an error when student is not registered', async () => {
+      const {
+        studentServiceMock: { editStudentErrorNotExistsReturn },
+      } = servicesMock
+
+      studentService.studentRepository.getStudent.resolves()
+
+      studentService
+        .editStudent(student)
+        .then()
+        .catch((value) =>
+          expect(value).to.be.deep.equal(editStudentErrorNotExistsReturn)
+        )
+    })
   })
 })
