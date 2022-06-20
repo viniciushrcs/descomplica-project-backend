@@ -1,3 +1,5 @@
+const { UserInputError } = require('apollo-server')
+
 const getStudentsValidReturn = [
   {
     cpf: 'cpf1',
@@ -23,6 +25,10 @@ const getStudentsErrorReturn = new Error(
 
 const getStudentErrorReturn = new Error(
   'Error: An error ocurred while trying to get one register from student table'
+)
+
+const createStudentErrorNoParameterReturn = new UserInputError(
+  'All parameters must be passed'
 )
 
 const createStudentErrorReturn = new Error(
@@ -62,4 +68,5 @@ module.exports = {
   editStudentErrorReturn,
   deleteStudentValidReturn,
   deleteStudentErrorReturn,
+  createStudentErrorNoParameterReturn,
 }

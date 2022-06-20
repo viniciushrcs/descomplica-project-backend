@@ -84,4 +84,27 @@ describe('Student Service', () => {
         .catch((value) => expect(value).to.be.deep.equal(getStudentErrorReturn))
     })
   })
+
+  describe('createStudent', () => {
+    const newStudent = {
+      cpf: 'cpf4',
+      name: 'name4',
+      email: 'email4',
+    }
+    it('Must create a new student when createStudent is called', async () => {
+      const {
+        studentServiceMock: { createStudentValidReturn },
+      } = servicesMock
+
+      studentService.studentRepository.getStudent.resolves()
+
+      studentService.studentRepository.createStudent.resolves(
+        createStudentValidReturn
+      )
+
+      const response = await studentService.createStudent(newStudent)
+
+      expect(response).to.be.deep.equal(newStudent)
+    })
+  })
 })
