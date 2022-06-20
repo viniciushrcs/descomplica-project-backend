@@ -39,7 +39,7 @@ class StudentService {
     })
 
     if (isStudentRegistered)
-      throw new ApolloError('User already registered, try to edit')
+      throw new ApolloError('Student already registered, try to edit')
 
     try {
       const newStudentResponse = await this.studentRepository.createStudent({
@@ -64,7 +64,9 @@ class StudentService {
     })
 
     if (!studentExists)
-      throw new ApolloError('User does not exist, try to create a new student')
+      throw new ApolloError(
+        'Student does not exist, try to create a new student'
+      )
 
     try {
       const editStudentResponse = await this.studentRepository.editStudent(
@@ -86,7 +88,7 @@ class StudentService {
     })
 
     if (!studentExists)
-      throw new ApolloError('User cannot be deleted since it does not exist')
+      throw new ApolloError('Student cannot be deleted since it does not exist')
 
     try {
       await this.studentRepository.deleteStudent(cpf)
