@@ -134,5 +134,21 @@ describe('Student Service', () => {
           expect(value).to.be.deep.equal(createStudentErrorAlreadyExistsReturn)
         )
     })
+
+    it('Must throw an error when studentRepository.createStudent throws', async () => {
+      const {
+        studentServiceMock: { createStudentErrorReturn },
+      } = servicesMock
+
+      studentService.studentRepository.getStudent.resolves()
+      studentService.studentRepository.createStudent.rejects()
+
+      studentService
+        .createStudent(newStudent)
+        .then()
+        .catch((value) =>
+          expect(value).to.be.deep.equal(createStudentErrorReturn)
+        )
+    })
   })
 })
