@@ -35,6 +35,10 @@ const createStudentErrorReturn = new Error(
   'Error: An error ocurred while trying to insert one register in student table'
 )
 
+const createStudentErrorAlreadyExistsReturn = new Error(
+  'User already registered, try to edit'
+)
+
 const createStudentValidReturn = {
   cpf: 'cpf4',
   name: 'name4',
@@ -69,4 +73,5 @@ module.exports = {
   deleteStudentValidReturn,
   deleteStudentErrorReturn,
   createStudentErrorNoParameterReturn,
+  createStudentErrorAlreadyExistsReturn,
 }
