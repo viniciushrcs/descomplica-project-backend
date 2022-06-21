@@ -10,7 +10,7 @@ Esse projeto se trata de uma API, em node e GraphQL, que consome um banco de dad
 
 Para rodar o projeto, você precisa:
 1. clonar este repositório
-2. Entrar no diretório e rodar o npm install
+2. Entrar no diretório
 3. adicionar um arquivo .env com a seguinte variável
   POSTGRES_HOST=postgresql://user:123456@db:5432/descomplica_project
   PORT=3001
