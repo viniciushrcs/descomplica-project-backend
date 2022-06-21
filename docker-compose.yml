@@ -1,0 +1,25 @@
+version: '3'
+volumes:
+  data:
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=123456
+    volumes:
+      - data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+     - 5432:5432
+  server:
+    image: node:16.15.0
+    volumes:
+      - .:/user/server
+    working_dir: /user/server
+    ports:
+      - '3001:3001'
+    command: bash -c "cd /user/server && npm install && npm run knex:migrate && npm start"
+    depends_on:
+      - db

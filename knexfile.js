@@ -2,13 +2,7 @@ const { postgres } = require('./src/config')
 
 module.exports = {
   client: postgres.client,
-  connection: {
-    host: postgres.connection.host,
-    port: postgres.connection.port,
-    user: postgres.connection.user,
-    password: postgres.connection.password,
-    database: postgres.connection.database,
-  },
+  connection: postgres.connection,
   pool: {
     min: 2,
     max: 10,
